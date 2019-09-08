@@ -93,26 +93,26 @@ class MyList extends LitElement {
 
     this.scrollTop = e.target.scrollTop;
 
-    let startingIndex = this.getSize(this.scrollTop);
-    let endIndex = this.getSize(this.getBottom());
+    let start = this.getPosition(this.scrollTop);
+    let end = this.getPosition(this.getBottom());
 
     if (isForward) {
-      endIndex += this.overscanCount;
+      end += this.overscanCount;
     } else {
-      startingIndex -= this.overscanCount;
+      start -= this.overscanCount;
     }
 
-    startingIndex = startingIndex < 0 ? 0 : startingIndex;
-    endIndex = endIndex > this.totalCount ? this.totalCount : endIndex;
+    start = start < 0 ? 0 : start;
+    end = end > this.totalCount ? this.totalCount : end;
 
-    this.list = list.slice(startingIndex, endIndex);
+    this.list = list.slice(start, end);
   }
 
   getBottom() {
     return this.visibleHeight + this.scrollTop;
   }
 
-  getSize(height) {
+  getPosition(height) {
     return Math.floor(height / this.rowHeight);
   }
 
@@ -122,12 +122,8 @@ class MyList extends LitElement {
       .getBoundingClientRect().height;
     this.list = list.slice(
       0,
-      this.getSize(this.visibleHeight) + this.overscanCount
+      this.getPosition(this.visibleHeight) + this.overscanCount
     );
-  }
-
-  shouldUpdate() {
-    return true;
   }
 }
 
